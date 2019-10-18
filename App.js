@@ -8,7 +8,7 @@
 */
 
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { Dimensions, StyleSheet, Text, Image, View, SafeAreaView, FlatList } from 'react-native';
 import { Images, Colors } from './App/Themes'
 import APIRequest from './App/Config/APIRequest'
 
@@ -25,12 +25,10 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-
-    //uncomment this to run an API query!
-    //this.loadArticles();
+    this.loadArticles();
   }
 
-  async loadArticles(searchTerm = '', category = '') {
+ loadArticles = async (searchTerm = '', category = '') => {
     this.setState({articles:[], loading: true});
     var resultArticles = [];
     if (category === '') {
@@ -44,21 +42,31 @@ export default class App extends React.Component {
 
   render() {
     const {articles, loading} = this.state;
-
+    const dimensions = Dimensions.get('window');
+    const imageWidth = dimensions.width;
     return (
       <SafeAreaView style={styles.container}>
+        <View style={styles.logo}>
+          <Image
+            source={Images.logo}
+            resizeMode="contain"
+            style={{width: imageWidth, height: 100}}
+          />
+        </View>
 
-        <Text style={{textAlign: 'center'}}>Have fun! :) {"\n"} Start by changing the API Key in "./App/Config/AppConfig.js" {"\n"} Then, take a look at the following components: {"\n"} NavigationButtons {"\n"} Search {"\n"} News {"\n"} 🔥</Text>
+        <Search loadArticles={this.loadArticles} />
 
-        {/*First, you'll need a logo*/}
+        <FlatList
+          data={this.state.articles}
+          renderItem={( {item, index} ) =>
+            <News data={item}/>
+          }
+          keyExtractor={(item, index) => {
+            return index.toString()
+          }}
+        />
 
-        {/*Then your search bar*/}
 
-        {/*And some news*/}
-
-        {/*Though, you can style and organize these however you want! power to you 😎*/}
-
-        {/*If you want to return custom stuff from the NYT API, checkout the APIRequest file!*/}
 
       </SafeAreaView>
     );
@@ -67,9 +75,15 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex:1 ,
+    alignItems: 'center',
+    flexDirection: 'column',
     backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: 'space-between',
+  },
+  logo: {
+      width: '100%',
+      overflow: 'visible',
+
   }
 });

@@ -7,24 +7,52 @@
 * Oct, 2018
 */
 
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
+import { Keyboard } from 'react-native';
 import PropTypes from 'prop-types' //consider using this!
-import { StyleSheet, View, Button, TextInput, TouchableOpacity } from 'react-native'
+import { FlatList, ActivityIndicator, StyleSheet, View, Button, TextInput, TouchableOpacity } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
 import { Metrics, Colors } from '../Themes'
 
 
-export default class Search extends Component {
+export default Search = (props) => {
 
-  render () {
+
+  const [value, setValue] = useState("");
+
+  onChangeText = text => {
+    setValue(text);
+  }
+
+  onSubmitEdit = () => {
+    props.loadArticles(value);
+  }
+
+  onPress = () => {
+    props.loadArticles(value);
+  }
+
     return (
-      <View> {/*Some styles with a fancy background and padding...*/}
+      <View>
 
-        {/*user input and a search button!*/}
+        <View>
+          <TextInput
+            style={{height: 40, borderColor: 'gray', borderWidth:1}}
+            onChangeText={text=> this.onChangeText(text)}
+            value={value}
+            onSubmitEditing={this.onSubmitEdit}
+            />
+          <Button
+            title="Submit"
+            onPress={this.onPress}
+          />
+
+        </View>
+
 
       </View>
     );
-  }
+
 }
 
 

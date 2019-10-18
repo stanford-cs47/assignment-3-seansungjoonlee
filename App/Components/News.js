@@ -27,7 +27,22 @@ export default class News extends Component {
 
     return (
       <View style={styles.container}>
-        {/*Some FlatList or SectionList*/}
+        <Text style={ { fontSize: 40, fontWeight: 'bold' } }>
+          {this.props.data.title}
+        </Text>
+
+        <Text style={ { fontSize: 20 }}>
+          {this.props.data.snippet}
+        </Text>
+
+        <Text style={ { fontSize: 20, fontWeight: 'bold' } }>
+          {this.props.data.date}
+        </Text>
+
+        <Text style={ { fontSize: 10, fontWeight: 'bold' } }>
+          {this.props.data.byline}
+        </Text>
+
       </View>
     );
   }
